@@ -7,7 +7,6 @@
   <style>
     :root {
       --bg: #0d1320;
-      --panel: #141d2d;
       --text: #f7fbff;
       --muted: #b9c4d6;
       --line: rgba(255, 255, 255, 0.12);
@@ -75,6 +74,7 @@
 
     .intro {
       margin-bottom: 22px;
+      text-align: center;
     }
 
     .intro p {
@@ -106,9 +106,18 @@
       aspect-ratio: 16 / 9;
     }
 
+    .hint {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      text-align: center;
+    }
+
     .actions {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 12px;
       margin-top: 22px;
     }
@@ -170,8 +179,13 @@
     </section>
 
     <section class="player" aria-label="视频播放器">
-      <video id="project-video" src="weather_clock.mp4" controls playsinline preload="metadata"></video>
+      <video id="project-video" controls playsinline preload="metadata">
+        <source id="project-video-source" src="weather_clock.mp4" type="video/mp4" />
+        当前浏览器无法播放这个视频，请确认视频为 H.264 编码的 MP4 文件。
+      </video>
     </section>
+
+    <p class="hint">如果在 GitHub 仓库文件页面无法播放，请通过 GitHub Pages 部署后访问网页。</p>
 
     <div class="actions">
       <a id="source-link" class="btn btn-source" href="https://github.com/laobanwang676-droid/HAL_stm32F4_RTOS_clock.git" target="_blank" rel="noopener noreferrer">查看源码</a>
@@ -196,11 +210,14 @@
     const params = new URLSearchParams(window.location.search);
     const projectKey = params.get("project") || "weather";
     const project = projects[projectKey] || projects.weather;
+    const video = document.getElementById("project-video");
+    const source = document.getElementById("project-video-source");
 
     document.title = `${project.title} - 项目演示视频`;
     document.getElementById("video-title").textContent = project.title;
-    document.getElementById("project-video").src = project.video;
     document.getElementById("source-link").href = project.source;
+    source.src = project.video;
+    video.load();
   </script>
 </body>
 </html>

@@ -6,16 +6,16 @@
   <title>小汪的开源网站</title>
   <style>
     :root {
-      --bg: #f7f8fb;
-      --text: #19202a;
+      --bg: #f7f9fc;
+      --text: #172033;
       --muted: #647084;
-      --line: #dfe5ee;
-      --panel: rgba(255, 255, 255, 0.88);
+      --line: #dfe6ef;
+      --panel: rgba(255, 255, 255, 0.9);
       --primary: #1663d9;
       --primary-dark: #0d47a1;
       --accent: #12a98c;
       --ink: #101828;
-      --shadow: 0 20px 55px rgba(28, 39, 60, 0.12);
+      --shadow: 0 18px 46px rgba(28, 39, 60, 0.12);
     }
 
     * {
@@ -28,9 +28,9 @@
       font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 12% 12%, rgba(18, 169, 140, 0.14), transparent 28%),
-        radial-gradient(circle at 86% 8%, rgba(22, 99, 217, 0.13), transparent 30%),
-        linear-gradient(180deg, #ffffff 0%, var(--bg) 42%, #eef3f7 100%);
+        radial-gradient(circle at 12% 10%, rgba(18, 169, 140, 0.14), transparent 28%),
+        radial-gradient(circle at 86% 6%, rgba(22, 99, 217, 0.13), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 48%, #eef3f7 100%);
     }
 
     a {
@@ -47,13 +47,12 @@
     .topbar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 14px 0 34px;
+      justify-content: center;
+      padding: 14px 0 42px;
     }
 
     .brand {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 12px;
       font-weight: 800;
@@ -76,20 +75,21 @@
     }
 
     .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-      gap: 32px;
-      align-items: center;
-      padding: 36px 0 48px;
+      display: flex;
+      justify-content: center;
+      padding: 44px 0 68px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
     }
 
     .hero-copy {
-      max-width: 680px;
+      width: min(820px, 100%);
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 9px;
       margin: 0 0 18px;
       color: var(--primary-dark);
@@ -97,7 +97,8 @@
       font-size: 0.92rem;
     }
 
-    .eyebrow::before {
+    .eyebrow::before,
+    .eyebrow::after {
       content: "";
       width: 34px;
       height: 2px;
@@ -107,71 +108,26 @@
     h1 {
       margin: 0;
       color: var(--ink);
-      font-size: clamp(2.25rem, 5vw, 5rem);
+      font-size: clamp(2.35rem, 7vw, 5.6rem);
       line-height: 1.04;
       letter-spacing: 0;
     }
 
     .hero-subtitle {
-      margin: 22px 0 0;
-      max-width: 620px;
+      margin: 22px auto 0;
+      max-width: 680px;
       color: var(--muted);
       font-size: 1.1rem;
       line-height: 1.8;
     }
 
-    .hero-media {
-      position: relative;
-      overflow: hidden;
-      min-height: 360px;
-      border: 1px solid rgba(18, 169, 140, 0.18);
-      border-radius: 8px;
-      background: #0e1726;
-      box-shadow: var(--shadow);
-    }
-
-    .hero-media video {
-      width: 100%;
-      height: 100%;
-      min-height: 360px;
-      object-fit: cover;
-      opacity: 0.78;
-      filter: saturate(1.04) contrast(1.04);
-    }
-
-    .media-label {
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 14px 16px;
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 8px;
-      background: rgba(11, 18, 32, 0.72);
-      backdrop-filter: blur(12px);
-    }
-
-    .media-label strong {
-      font-size: 0.98rem;
-    }
-
-    .media-label span {
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 0.86rem;
-    }
-
     .projects {
-      padding-top: 8px;
+      padding-top: 12px;
     }
 
     .project-section {
       padding: 34px 0;
-      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
     .project-section h2 {
@@ -194,60 +150,47 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 22px;
-      margin-top: 12px;
+      margin-top: 32px;
     }
 
     .action-card {
-      overflow: hidden;
       border: 1px solid rgba(100, 112, 132, 0.2);
       border-radius: 8px;
       background: var(--panel);
-      box-shadow: 0 14px 38px rgba(28, 39, 60, 0.1);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     }
 
-    .preview {
-      position: relative;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      background: #111827;
+    .action-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(22, 99, 217, 0.28);
+      box-shadow: 0 24px 56px rgba(28, 39, 60, 0.15);
     }
 
-    .preview video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.82;
-      transition: transform 0.4s ease, opacity 0.4s ease;
+    .card-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      color: var(--primary-dark);
+      font-size: 0.88rem;
+      font-weight: 800;
     }
 
-    .action-card:hover .preview video {
-      transform: scale(1.035);
-      opacity: 0.94;
-    }
-
-    .project-tag {
-      position: absolute;
-      left: 14px;
-      bottom: 14px;
-      max-width: calc(100% - 28px);
-      padding: 8px 10px;
-      color: #fff;
-      border-radius: 8px;
-      background: rgba(9, 15, 26, 0.72);
-      backdrop-filter: blur(10px);
-      font-weight: 700;
-      font-size: 0.92rem;
-      line-height: 1.35;
-    }
-
-    .card-body {
-      padding: 20px;
+    .card-kicker::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(18, 169, 140, 0.12);
     }
 
     .card-body h3 {
-      margin: 0 0 16px;
+      margin: 0 0 22px;
       color: var(--ink);
-      font-size: 1.08rem;
+      font-size: 1.28rem;
       line-height: 1.35;
       letter-spacing: 0;
     }
@@ -293,23 +236,13 @@
     footer {
       padding: 36px 0 0;
       color: var(--muted);
-      border-top: 1px solid var(--line);
       font-size: 0.92rem;
+      text-align: center;
     }
 
-    @media (max-width: 840px) {
-      .hero,
+    @media (max-width: 760px) {
       .action-grid {
         grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 20px;
-      }
-
-      .hero-media,
-      .hero-media video {
-        min-height: 270px;
       }
     }
 
@@ -320,29 +253,19 @@
       }
 
       .topbar {
-        padding-bottom: 20px;
+        padding-bottom: 24px;
       }
 
       .hero {
-        gap: 22px;
+        padding: 34px 0 52px;
       }
 
-      .media-label,
       .button-row {
         grid-template-columns: 1fr;
       }
 
-      .media-label {
-        display: block;
-      }
-
-      .media-label span {
-        display: block;
-        margin-top: 4px;
-      }
-
-      .card-body {
-        padding: 16px;
+      .action-card {
+        padding: 20px;
       }
     }
   </style>
@@ -364,13 +287,6 @@
           这里整理展示小汪的开源项目、源码仓库和演示视频，方便快速了解每个项目的功能与运行效果。
         </p>
       </div>
-      <div class="hero-media" aria-label="项目演示视频预览">
-        <video src="weather_clock.mp4" muted autoplay loop playsinline preload="metadata"></video>
-        <div class="media-label">
-          <strong>Free RTOS 智能天气时钟</strong>
-          <span>项目演示预览</span>
-        </div>
-      </div>
     </section>
 
     <section class="projects" aria-label="项目介绍">
@@ -387,12 +303,9 @@
 
     <section class="action-grid" aria-label="项目源码和演示视频">
       <article class="action-card">
-        <div class="preview">
-          <video src="weather_clock.mp4" muted loop playsinline preload="metadata"></video>
-          <span class="project-tag">Free RTOS智能天气时钟</span>
-        </div>
         <div class="card-body">
-          <h3>Free RTOS智能天气时钟</h3>
+          <span class="card-kicker">Free RTOS智能天气时钟</span>
+          <h3>基于Free RTOS的智能天气时钟</h3>
           <div class="button-row">
             <a class="btn btn-source" href="https://github.com/laobanwang676-droid/HAL_stm32F4_RTOS_clock.git" target="_blank" rel="noopener noreferrer">源码</a>
             <a class="btn btn-video" href="video.html?project=weather">演示视频</a>
@@ -401,11 +314,8 @@
       </article>
 
       <article class="action-card">
-        <div class="preview">
-          <video src="balance_car.mp4" muted loop playsinline preload="metadata"></video>
-          <span class="project-tag">多模态两轮自平衡系统</span>
-        </div>
         <div class="card-body">
+          <span class="card-kicker">多模态两轮自平衡系统</span>
           <h3>多模态两轮自平衡系统</h3>
           <div class="button-row">
             <a class="btn btn-source" href="https://github.com/laobanwang676-droid/HAL_stm32f103c8t6_BCar.git" target="_blank" rel="noopener noreferrer">源码</a>
@@ -419,16 +329,5 @@
       <span>持续更新开源项目中。</span>
     </footer>
   </main>
-
-  <script>
-    document.querySelectorAll(".preview video").forEach((video) => {
-      const card = video.closest(".action-card");
-      card.addEventListener("mouseenter", () => video.play().catch(() => {}));
-      card.addEventListener("mouseleave", () => {
-        video.pause();
-        video.currentTime = 0;
-      });
-    });
-  </script>
 </body>
 </html>
