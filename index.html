@@ -320,6 +320,69 @@
 
     <section class="projects" aria-label="项目介绍">
       <article class="project-section">
+        <h2>基于RT-Thread的多串锂电池管理系统(BMS)</h2>
+        <div class="project-summary">
+          <div class="summary-container collapsed">
+          <h3>一、项目概述</h3>
+          <p>本项目是一款专业化多节锂电池底层管理系统（BMS），以 STM32F103C8T6 为主控核心，搭配 BQ76920 电池前端芯片，基于 RT-Thread 实时操作系统开发。系统采用分层解耦架构与多线程实时调度，集成高精度电量估算、硬件级快速保护、被动均衡控制与 FinSH 命令行交互功能，完整实现锂电池包的状态监测、安全防护、电量管理与通信交互需求，是工业级电池管理场景的嵌入式综合解决方案。</p>
+
+          <h3>二、硬件与技术栈</h3>
+          <p><strong>核心硬件</strong></p>
+          <ul>
+            <li><strong>主控芯片：</strong>STM32F103C8T6（ARM Cortex-M3 内核，高性价比工业级主控）</li>
+            <li><strong>电池前端芯片：</strong>BQ76920（多节锂电池电压采集、硬件保护核心芯片）</li>
+            <li><strong>功能电路：</strong>锂电池被动均衡电路、硬件过流 / 短路保护电路</li>
+            <li><strong>交互接口：</strong>UART 串口（FinSH 命令行调试、数据交互）</li>
+          </ul>
+
+          <p><strong>核心技术</strong></p>
+          <ul>
+            <li>操作系统：RT-Thread（多线程调度、IPC 进程间通信）</li>
+            <li>开发库：STM32 标准库</li>
+            <li>通信协议：I2C（与 BQ76920 通信）、UART 串口</li>
+            <li>核心机制：互斥锁、信号量、软件定时器、环形缓冲区</li>
+            <li>交互工具：RT-Thread FinSH 命令行控制台</li>
+          </ul>
+
+          <h3>三、系统架构与核心机制</h3>
+          <p>系统采用BSP-HAL-APP 三层软件架构，实现底层硬件驱动、中间件接口与上层业务逻辑的完全解耦，具备极强的可维护性与扩展性。基于 RT-Thread 实时操作系统，将系统拆解为采集、保护、分析、均衡、信息交互5 个独立线程，通过优先级调度实现并行运行；采用互斥锁解决多线程共享 I2C 总线、采集数据的竞态问题，通过信号量实现线程同步与中断唤醒；依托 BQ76920 硬件特性 + 外部中断，实现毫秒级硬件断电保护；结合开路电压法、安时积分法与温度补偿算法，完成高精度 SOC 估算；通过软件定时器精准控制被动均衡时序，提升均衡效率。</p>
+
+          <h3>四、核心功能</h3>
+          <ul>
+            <li>多节锂电状态采集：通过 BQ76920 实时采集电池单体电压、温度、总电流等核心参数；</li>
+            <li>高精度 SOC 估算：开路电压法校准初始电量，安时积分法 + 温度补偿实时计算剩余电量；</li>
+            <li>硬件级安全保护：毫秒级响应短路、过流、过压、欠压等异常，实现硬件快速断电保护；</li>
+            <li>智能被动均衡：软件定时器控制均衡时序，自动修复单体电压差异，提升电池一致性；</li>
+            <li>FinSH 命令交互：支持串口命令行实时查询电池状态、配置保护参数、调试系统；</li>
+            <li>实时状态监控：全维度监测电池运行状态，异常状态实时上报与处理。</li>
+          </ul>
+
+          <h3>五、关键难点与解决方案</h3>
+          <p><strong>外设并发与 CPU 开销过高问题</strong><br>
+          难点：FinSH 命令行高频读取数据，采用轮询方式占用大量 CPU 资源，影响系统实时性；<br>
+          解决方案：设计硬件中断 + 环形缓冲区 + 信号量通信机制，线程阻塞等待信号量唤醒，彻底消除 CPU 轮询开销，实现数据无丢失、低功耗运行。</p>
+
+          <p><strong>多线程数据竞态与资源冲突问题</strong><br>
+          难点：采集、分析、均衡等任务共享 I2C 总线与底层采集数据，易引发数据错乱、时序异常；<br>
+          解决方案：采用互斥锁同步机制，对共享资源与公共数据进行互斥访问保护，保证多线程并发场景下的数据安全性与业务逻辑稳定性。</p>
+
+          <h3>六、项目亮点</h3>
+          <ul>
+            <li>分层架构设计：BSP-HAL-APP 三层解耦，代码模块化程度高，便于调试、移植与功能扩展；</li>
+            <li>实时性极强：RT-Thread 多线程调度，硬件保护毫秒级响应，满足工业电池管理严苛要求；</li>
+            <li>高精度电量算法：OCV + 安时积分 + 温度补偿融合算法，SOC 估算精度高、稳定性强；</li>
+            <li>低功耗优化：中断唤醒替代轮询，大幅降低 CPU 无用开销，适配电池供电场景；</li>
+            <li>线程安全可靠：互斥锁、信号量保障多任务稳定运行，无数据冲突、无系统死机；</li>
+            <li>调试交互便捷：集成 FinSH 命令行，支持实时参数配置与状态查询，开发维护效率高。</li>
+          </ul>
+
+          <h3>七、应用场景</h3>
+          <p>本系统可广泛应用于电动工具电池包、便携式储能电源、工业锂电模组、小型新能源设备、锂电池教学实训平台等场景，是嵌入式 RTOS 开发、电池管理算法、硬件保护电路、多线程并发编程的综合实践项目。</p>
+          </div>
+          <button class="summary-toggle" aria-expanded="false">项目介绍 ▾</button>
+        </div>
+      </article>
+      <article class="project-section">
         <h2>边缘 AI 的低功耗智能健康监护穿戴设备</h2>
         <div class="project-summary">
           <div class="summary-container collapsed">
@@ -567,8 +630,18 @@
     <section class="action-grid" aria-label="项目源码和演示视频">
       <article class="action-card">
         <div class="card-body">
+          <span class="card-kicker">RT-Thread 电池管理系统</span>
+          <h3>基于RT-Thread的多串锂电池管理系统(BMS)</h3>
+          <div class="button-row">
+            <a class="btn btn-source" href="#">即将上传</a>
+            <a class="btn btn-video" href="#">即将上传</a>
+          </div>
+        </div>
+      </article>
+      <article class="action-card">
+        <div class="card-body">
           <span class="card-kicker">边缘 AI 智能健康监护</span>
-          <h3>边缘 AI 的低功耗健康监护穿戴设备</h3>
+          <h3>边缘 AI 的低功耗智能健康监护穿戴设备</h3>
           <div class="button-row">
             <a class="btn btn-source" href="#">即将上传</a>
             <a class="btn btn-video" href="#">即将上传</a>

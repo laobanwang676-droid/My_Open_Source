@@ -142,6 +142,12 @@
       background: #fff;
     }
 
+    .btn-domestic {
+      color: var(--text);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
     .btn-home {
       color: #fff;
       background: linear-gradient(135deg, var(--primary), var(--accent));
@@ -185,10 +191,11 @@
       </video>
     </section>
 
-    <p class="hint">如果在应用内播放卡顿或无法播放，建议切换到系统浏览器（例如 Safari 或 Chrome）访问。</p>
+    <p class="hint">建议优先使用浏览器打开，若未使用 VPN 可能加载较慢，可选择“国内访问”。</p>
 
     <div class="actions">
       <a id="source-link" class="btn btn-source" href="https://github.com/laobanwang676-droid/HAL_stm32F4_RTOS_clock.git" target="_blank" rel="noopener noreferrer">查看源码</a>
+      <a class="btn btn-domestic" href="#" aria-disabled="true">国内访问</a>
       <a class="btn btn-home" href="index.html">返回项目列表</a>
     </div>
   </main>
