@@ -146,6 +146,35 @@
       line-height: 1.8;
     }
 
+    /* 折叠/展开简介样式 */
+    .summary-container {
+      overflow: hidden;
+      transition: max-height 0.32s ease;
+    }
+
+    .summary-container.collapsed {
+      /* 基于当前字体与行高，限制到 3 行可见 */
+      max-height: calc(1rem * 1.8 * 3);
+    }
+
+    .summary-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(100,112,132,0.12);
+      background: linear-gradient(135deg, rgba(22,99,217,0.06), rgba(18,169,140,0.06));
+      color: var(--primary-dark);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .summary-toggle:focus {
+      outline: 2px solid rgba(22,99,217,0.18);
+    }
+
     .action-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -284,20 +313,167 @@
         <p class="eyebrow">Open Source Projects</p>
         <h1 id="site-title">果冻的开源网站</h1>
         <p class="hero-subtitle">
-          这里整理展示小汪的开源项目、源码仓库和演示视频，方便快速了解每个项目的功能与运行效果。
+          这里整理展示果冻的开源项目、源码仓库和演示视频，方便快速了解每个项目的功能与运行效果。
         </p>
       </div>
     </section>
 
     <section class="projects" aria-label="项目介绍">
       <article class="project-section">
-        <h2>基于Free RTOS的智能天气时钟</h2>
-        <p class="project-summary"></p>
+        <h2>基于FreeRTOS的智能天气时钟</h2>
+        <div class="project-summary">
+          <div class="summary-container collapsed">
+          <h3>一、项目概述</h3>
+          <p>本项目是一款多功能嵌入式智能终端系统，以 STM32F407VET6 为主控核心，搭载 FreeRTOS 实时操作系统实现多任务协同运行，系统兼容 STM32 标准库与 HAL 库双版本开发，具备极强的可移植性与维护性。系统深度融合环境感知、网络数据交互、语音智能交互、实时报警与可视化人机交互等核心能力，实现了从数据采集、网络通信到智能响应、本地显示的全流程闭环，是一套完整的嵌入式综合应用解决方案。</p>
+
+          <h3>二、硬件与技术栈</h3>
+          <p><strong>核心硬件</strong></p>
+        <script>
+          // 折叠/展开项目介绍脚本
+          document.addEventListener('DOMContentLoaded', function () {
+            function toggleHandler(e) {
+              const btn = e.currentTarget;
+              const container = btn.previousElementSibling; // summary-container
+              if (!container) return;
+              const expanded = btn.getAttribute('aria-expanded') === 'true';
+              if (expanded) {
+                container.classList.add('collapsed');
+                btn.setAttribute('aria-expanded', 'false');
+                btn.textContent = '项目介绍 ▾';
+              } else {
+                container.classList.remove('collapsed');
+                btn.setAttribute('aria-expanded', 'true');
+                btn.textContent = '收起 ▴';
+              }
+            }
+
+            document.querySelectorAll('.summary-toggle').forEach(btn => {
+              btn.addEventListener('click', toggleHandler);
+            });
+          });
+        </script>
+          <ul>
+            <li><strong>主控芯片：</strong>STM32F407VET6（高性能 ARM Cortex-M4 内核）</li>
+            <li><strong>通信模块：</strong>ESP32C3 模块（WiFi 联网、网络数据获取）</li>
+            <li><strong>传感模块：</strong>AHT20 I2C 接口温湿度传感器</li>
+            <li><strong>显示模块：</strong>ST7789 LCD 显示屏（SPI 接口 + DMA 传输）</li>
+            <li><strong>交互模块：</strong>SU03T语音识别 / LU6288播报模块、物理按键</li>
+          </ul>
+
+          <p><strong>核心技术</strong></p>
+          <ul>
+            <li>操作系统：FreeRTOS（任务调度、进程间通信）</li>
+            <li>驱动框架：LVGL 嵌入式图形库</li>
+            <li>通信协议：UART 串口、I2C、SPI、DMA</li>
+            <li>软件兼容：STM32 标准库 / HAL 库双版本支持</li>
+          </ul>
+
+          <h3>三、系统架构与核心机制</h3>
+          <p>系统采用FreeRTOS 多任务架构设计，通过精细化的任务调度实现各功能模块并行运行；依托队列、信号量等 IPC 机制完成任务间数据同步与资源互斥访问，保障系统实时性与稳定性。主控通过UART 串口与 ESP32 通信，结合串口中断接收 + 指令校验机制，确保天气数据、网络时间等网络信息的精准获取；通过I2C 协议与温湿度传感器通信，实现环境数据实时采集；采用LVGL 图形框架驱动 LCD，搭配SPI+DMA数据传输方式，大幅提升屏幕刷新效率，降低 CPU 占用率；支持按键配网、语音识别、阈值报警等智能化交互逻辑，打造一体化智能体验。</p>
+
+          <h3>四、核心功能</h3>
+          <ul>
+            <li>智能环境监测：实时采集环境温湿度数据，支持自定义阈值，触发声光 / 界面智能报警；</li>
+            <li>WiFi 网络交互：按键快速配网，通过 ESP32 获取公网天气数据、网络标准时间；</li>
+            <li>语音智能交互：支持语音指令识别，可播报温湿度、天气、网络时间等信息；</li>
+            <li>LVGL 人机交互：可视化界面实时展示环境数据、网络状态、报警信息，操作便捷；</li>
+            <li>高可靠通信：串口指令校验、数据容错处理，保障模块间通信稳定可靠。</li>
+          </ul>
+
+          <h3>五、关键难点与解决方案</h3>
+          <p><strong>LCD 多任务数据显示竞态问题</strong><br>
+          难点：多个任务同时操作显示屏，易出现数据错乱、显示异常；<br>
+          解决方案：采用 FreeRTOS 队列作为数据传输中介，统一管理显示数据，避免多任务资源竞争，保证显示流畅性与数据准确性。</p>
+
+          <p><strong>串口数据接收可靠性问题</strong><br>
+          难点：ESP32 高频数据传输易出现丢包、误码；<br>
+          解决方案：使用串口中断接收数据，搭配指令校验机制，确保网络数据解析精准。</p>
+
+          <p><strong>多外设资源冲突问题</strong><br>
+          难点：传感器、WiFi、显示屏、语音模块共用系统资源；<br>
+          解决方案：通过信号量实现资源互斥访问，FreeRTOS 优先级调度保障核心任务优先执行。</p>
+
+          <h3>六、项目亮点</h3>
+          <ul>
+            <li>双库兼容设计：同时支持标准库与 HAL 库开发，适配不同开发习惯与移植需求；</li>
+            <li>实时性强：基于 FreeRTOS 的多任务架构，响应速度快、系统稳定性高；</li>
+            <li>高效显示：SPI+DMA+LVGL 组合，实现高帧率、低功耗的人机界面；</li>
+            <li>功能模块化：各功能解耦设计，便于二次开发、功能扩展与调试维护；</li>
+            <li>全场景交互：融合按键、语音、可视化界面，打造沉浸式智能交互体验。</li>
+          </ul>
+
+          <h3>七、应用场景</h3>
+          <p>本系统可广泛应用于智能家居环境监测、室内智能终端、嵌入式教学实训、工业环境监控节点等场景，是嵌入式 RTOS 开发、外设驱动、通信协议、人机交互等技术的综合实践项目。</p>
+          </div>
+          <button class="summary-toggle" aria-expanded="false">项目介绍 ▾</button>
+        </div>
       </article>
 
       <article class="project-section">
         <h2>多模态两轮自平衡系统</h2>
-        <p class="project-summary"></p>
+        <div class="project-summary">
+          <div class="summary-container collapsed">
+          <h3>一、项目概述</h3>
+          <p>本项目以STM32F103C8T6为主控芯片，采用标准库与 HAL 库双版本工程开发，打造一款高性能两轮自平衡智能小车。系统融合姿态闭环平衡、自主循迹、智能避障、蓝牙远程操控四大核心功能，通过多传感器数据融合与高精度闭环控制算法，实现稳定的自主运行与远程交互，是嵌入式控制、传感器融合、运动控制算法的综合实践项目。</p>
+
+          <h3>二、硬件平台</h3>
+          <ul>
+            <li><strong>主控芯片：</strong>STM32F103C8T6（ARM Cortex-M3 内核，高性能低成本）</li>
+            <li><strong>姿态传感器：</strong>MPU6050（六轴陀螺仪 + 加速度计，用于姿态解算）</li>
+            <li><strong>执行机构：</strong>双路 520 直流减速电机，驱动小车运动与平衡</li>
+            <li><strong>显示模块：</strong>0.96 寸 OLED 显示屏，实时显示小车姿态、运行模式、传感器数据</li>
+            <li><strong>通信模块：</strong>蓝牙串口模块，实现手机 APP 远程无线操控</li>
+            <li><strong>环境传感器：</strong>HC-SR04 超声波模块、五路红外循迹模块</li>
+            <li><strong>保护机制：</strong>倒地检测、过流保护、扶正自启动硬件电路</li>
+          </ul>
+
+          <h3>三、核心技术与控制机制</h3>
+          <p><strong>姿态感知与解算</strong><br>
+          通过软件 I2C 协议读取 MPU6050 原始数据，结合卡尔曼滤波算法对陀螺仪与加速度计数据进行融合解算，输出高精度实时姿态角。</p>
+
+          <p><strong>三级闭环 PID 控制</strong><br>
+          搭建直立环 + 速度环 + 转向环三环 PID 控制架构：直立环保证小车动态平衡，速度环实现匀速行驶，转向环完成精准转向控制，三者协同保障小车稳定运行。</p>
+
+          <p><strong>智能感知控制</strong><br>
+          五路红外循迹模块采集路面信号，采用 PD 闭环控制实现高精度黑线循迹；HC-SR04 超声波实时检测前方障碍物，触发自动避障策略；蓝牙与 OLED 提供交互与状态显示。</p>
+
+          <h3>四、核心功能</h3>
+          <ul>
+            <li>自平衡控制：基于三环 PID 实现小车动态直立平衡，抗干扰能力强；</li>
+            <li>自主循迹：五路红外 + PD 控制，精准识别黑线轨迹，稳定沿迹行驶；</li>
+            <li>智能避障：超声波实时测距，自动绕行障碍物，无碰撞运行；</li>
+            <li>蓝牙遥控：手机 APP 远程控制小车启停、转向、调速；</li>
+            <li>状态显示：OLED 实时输出姿态角、运行模式、传感器数据；</li>
+            <li>安全保护：倒地自动停机，扶正后快速恢复平衡状态。</li>
+          </ul>
+
+          <h3>五、关键难点与解决方案</h3>
+          <p><strong>循迹精度低、行驶抖动</strong><br>
+          难点：传统开关控制循迹偏差大、响应迟钝；<br>
+          解决方案：采用 PD 闭环控制算法，优化响应速度与稳定性，循迹平滑度大幅提升。</p>
+
+          <p><strong>MPU6050 姿态解算零漂严重</strong><br>
+          难点：陀螺仪温漂、加速度计噪声导致姿态角漂移；<br>
+          解决方案：引入卡尔曼滤波融合多传感器数据，有效抑制零漂，提升平衡稳定性。</p>
+
+          <p><strong>多任务控制冲突</strong><br>
+          难点：平衡、循迹、避障多任务并行导致控制紊乱；<br>
+          解决方案：模块化任务调度，优先级分配核心控制任务，保证系统实时性。</p>
+
+          <h3>六、项目亮点</h3>
+          <ul>
+            <li>双库兼容开发：同时支持标准库与 HAL 库，适配不同开发场景；</li>
+            <li>多模式一体化：集自平衡、循迹、避障、遥控于一体；</li>
+            <li>高精度算法：卡尔曼滤波 + 三环 PID + PD 控制，控制精度高；</li>
+            <li>可视化交互：OLED + 蓝牙远程操控，人机交互友好；</li>
+            <li>高安全性：完善的硬件保护与软件容错机制。</li>
+          </ul>
+
+          <h3>七、应用场景</h3>
+          <p>本项目可应用于嵌入式运动控制教学实训、智能小车竞赛、科创 DIY 项目、自主移动机器人入门开发等场景，覆盖传感器驱动、滤波算法、PID 控制、无线通信等嵌入式核心技术点。</p>
+          </div>
+          <button class="summary-toggle" aria-expanded="false">项目介绍 ▾</button>
+        </div>
       </article>
     </section>
 
@@ -307,7 +483,7 @@
           <span class="card-kicker">Free RTOS智能天气时钟</span>
           <h3>基于Free RTOS的智能天气时钟</h3>
           <div class="button-row">
-            <a class="btn btn-source" href="https://github.com/laobanwang676-droid/HAL_stm32F4_RTOS_clock.git" target="_blank" rel="noopener noreferrer">源码</a>
+            <a class="btn btn-source" href="https://github.com/laobanwang676-droid/Weather_Clock.git" target="_blank" rel="noopener noreferrer">源码</a>
             <a class="btn btn-video" href="video.html?project=weather">演示视频</a>
           </div>
         </div>
@@ -318,7 +494,7 @@
           <span class="card-kicker">多模态两轮自平衡系统</span>
           <h3>多模态两轮自平衡系统</h3>
           <div class="button-row">
-            <a class="btn btn-source" href="https://github.com/laobanwang676-droid/HAL_stm32f103c8t6_BCar.git" target="_blank" rel="noopener noreferrer">源码</a>
+            <a class="btn btn-source" href="https://github.com/laobanwang676-droid/Balance_Car.git" target="_blank" rel="noopener noreferrer">源码</a>
             <a class="btn btn-video" href="video.html?project=balance">演示视频</a>
           </div>
         </div>
